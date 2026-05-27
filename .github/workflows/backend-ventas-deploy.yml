@@ -1,0 +1,53 @@
+name: Deploy Backend Ventas
+
+on:
+  push:
+    branches: ["deploy"]
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-east-1
+
+      BACKEND_INSTANCE_ID: i-XXXXXXXX
+      # ⚠️ CAMBIAR POR ID REAL EC2
+
+      BACKEND_APP_DIR: /home/ec2-user/tutorial-backend
+      # ⚠️ CAMBIAR SI TU CARPETA EN EC2 ES DISTINTA
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        run: |
+          mkdir -p ~/.aws
+
+          cat > ~/.aws/credentials << EOF
+          [default]
+          aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}
+          EOF
+
+          cat > ~/.aws/config << EOF
+          [default]
+          region=${AWS_REGION}
+          output=json
+          EOF
+
+      - name: Deploy backend ventas with SSM
+        run: |
+          aws ssm send-command \
+          --region "${AWS_REGION}" \
+          --document-name "AWS-RunShellScript" \
+          --instance-ids "${BACKEND_INSTANCE_ID}" \
+          --parameters commands='[
+            "cd ${BACKEND_APP_DIR}",
+            "docker compose pull",
+            "docker compose up -d"
+          ]'

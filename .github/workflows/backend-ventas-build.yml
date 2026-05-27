@@ -1,0 +1,41 @@
+name: Build & Push Backend Ventas
+
+on:
+  push:
+    branches: ["deploy"]
+
+permissions:
+  contents: read
+
+env:
+  DOCKERHUB_NAMESPACE: TU_USUARIO_DOCKERHUB # ⚠️ CAMBIAR
+  BACK_IMAGE: ventas-backend
+
+jobs:
+  build-and-push:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login DockerHub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" \
+          | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build backend ventas image
+        run: |
+          docker build \
+          -f back-Ventas_SpringBoot/Springboot-API-REST/Dockerfile \
+          -t ${{ env.DOCKERHUB_NAMESPACE }}/${{ env.BACK_IMAGE }}:latest \
+          back-Ventas_SpringBoot/Springboot-API-REST
+
+      - name: Push backend ventas image
+        run: |
+          docker push ${{ env.DOCKERHUB_NAMESPACE }}/${{ env.BACK_IMAGE }}:latest

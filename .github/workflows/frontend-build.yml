@@ -1,0 +1,41 @@
+name: Build & Push Frontend
+
+on:
+  push:
+    branches: ["deploy"] # ✅ Correcto según la pauta
+
+permissions:
+  contents: read
+
+env:
+  DOCKERHUB_NAMESPACE: TU_USUARIO_DOCKERHUB # ⚠️ CAMBIAR
+  FRONT_IMAGE: frontend
+
+jobs:
+  build-and-push:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login DockerHub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" \
+          | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build frontend image
+        run: |
+          docker build \
+          -f front_despacho/Dockerfile \ # ✅ Ruta correcta
+          -t ${{ env.DOCKERHUB_NAMESPACE }}/${{ env.FRONT_IMAGE }}:latest \
+          front_despacho
+
+      - name: Push frontend image
+        run: |
+          docker push ${{ env.DOCKERHUB_NAMESPACE }}/${{ env.FRONT_IMAGE }}:latest
