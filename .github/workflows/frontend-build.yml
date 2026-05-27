@@ -32,9 +32,9 @@ jobs:
       - name: Build frontend image
         run: |
           docker build \
-          -f front_despacho/Dockerfile \ # ✅ Ruta correcta
-          -t ${{ env.DOCKERHUB_NAMESPACE }}/${{ env.FRONT_IMAGE }}:latest \
-          front_despacho
+            -f front_despacho/Dockerfile \
+            -t ${{ env.DOCKERHUB_NAMESPACE }}/${{ env.FRONT_IMAGE }}:latest \
+            front_despacho
 
       - name: Push frontend image
         run: |
