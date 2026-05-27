@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 env:
-  DOCKERHUB_NAMESPACE: TU_USUARIO_DOCKERHUB # ⚠️ CAMBIAR
+  DOCKERHUB_NAMESPACE: renattoduoc
   BACK_IMAGE: ventas-backend
 
 jobs:
