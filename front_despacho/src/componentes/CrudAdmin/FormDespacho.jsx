@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import axios from "axios";
 
+const API_VENTAS = "http://32.198.147.179:8082";
+const API_DESPACHOS = "http://32.198.147.179:8081";
+
 export const FormDespacho = ({ venta, onClose }) => {
   const { register, handleSubmit } = useForm();
 
@@ -28,7 +31,7 @@ export const FormDespacho = ({ venta, onClose }) => {
 
       // BACKEND VENTAS (8082)
       await axios.put(
-        `/api/ventas/api/v1/ventas/${venta.idVenta}`,
+        `${API_VENTAS}/api/v1/ventas/${venta.idVenta}`,
         jsonDataSales,
         {
           headers: {
@@ -40,7 +43,7 @@ export const FormDespacho = ({ venta, onClose }) => {
 
       // BACKEND DESPACHOS (8081)
       await axios.post(
-        `/api/despachos/api/v1/despachos`,
+        `${API_DESPACHOS}/api/v1/despachos`,
         jsonData,
         {
           headers: {
