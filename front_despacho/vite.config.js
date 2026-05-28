@@ -6,14 +6,14 @@ export default defineConfig({
   server: {
     proxy: {
       '/api/ventas': {
-        target: 'http://localhost:8082',
+        target: 'http://10.0.133.210:8082',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api\/ventas/, '')
       },
 
       '/api/despachos': {
-        target: 'http://localhost:8081',
+        target: 'http://10.0.133.210:8081',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api\/despachos/, '')
