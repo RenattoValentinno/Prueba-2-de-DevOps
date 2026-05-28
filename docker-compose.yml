@@ -10,7 +10,7 @@ services:
       - "8082:8082"
 
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/sistema
+      SPRING_DATASOURCE_URL: jdbc:mysql://10.0.152.242:3306/sistema
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
 
@@ -28,7 +28,7 @@ services:
       - "8081:8081"
 
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/sistema
+      SPRING_DATASOURCE_URL: jdbc:mysql://10.0.152.242:3306/sistema
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
 
